@@ -6,7 +6,10 @@ const path = require('path')
 const { dependencies } = require('../package.json')
 const webpack = require('webpack')
 
-const BabiliWebpackPlugin = require('babili-webpack-plugin')
+// const BabiliWebpackPlugin = require('babili-webpack-plugin')
+const TerserPlugin = require('terser-webpack-plugin')
+
+
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
@@ -159,7 +162,14 @@ if (process.env.NODE_ENV === 'production') {
   rendererConfig.devtool = ''
 
   rendererConfig.plugins.push(
-    new BabiliWebpackPlugin(),
+    // new BabiliWebpackPlugin(),
+    new TerserPlugin({
+      parallel: true,
+      terserOptions: {
+        ecma: 6,
+      },
+    }),
+
     new CopyWebpackPlugin([
       {
         from: path.join(__dirname, '../static'),
